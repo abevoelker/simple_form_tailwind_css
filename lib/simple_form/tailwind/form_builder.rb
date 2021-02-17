@@ -6,6 +6,10 @@ module SimpleForm
   module Tailwind
     class FormBuilder < SimpleForm::FormBuilder
       map_type :string, :email, :search, :tel, :url, :uuid, :citext, to: SimpleForm::Tailwind::Inputs::StringInput
+
+      def error_notification(options = {})
+        SimpleForm::Tailwind::ErrorNotification.new(self, options).render
+      end
     end
   end
 end

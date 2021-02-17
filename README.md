@@ -78,6 +78,7 @@ Here's an example form demonstrating usage:
 
 ```erb
 <%= simple_form_for(@foo, builder: SimpleForm::Tailwind::FormBuilder, html: { class: "space-y-6" }) do |f| %>
+  <%= f.error_notification %>
   <%= f.input :name, wrapper: :tailwind_string_input, autocomplete: "name", placeholder: "Alex Smith", label: "Display name" %>
   <%= f.input :email, wrapper: :tailwind_string_input, autocomplete: "email", placeholder: "asmith@example.com", label: "Email address" %>
   <div>
@@ -85,6 +86,24 @@ Here's an example form demonstrating usage:
   </div>
 <% end %>
 ```
+
+## Components
+
+### Error notification
+
+Simple Form's error notification is supported, defaulting to a red color with x-circle Heroicon:
+
+```erb
+<%= f.error_notification %>
+```
+
+You can customize the color and icon used:
+
+```erb
+<%= f.error_notification color: "blue", icon: "information-circle" %>
+```
+
+The message and other parameters are customized using the [expected Simple Form configuration options](https://www.rubydoc.info/github/plataformatec/simple_form/SimpleForm%2FFormBuilder:error_notification).
 
 ## License
 
