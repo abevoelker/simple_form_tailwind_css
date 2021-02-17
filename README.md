@@ -39,6 +39,26 @@ config.wrappers :tailwind_string_input, tag: 'div', class: '', error_class: '', 
   b.use :full_error, wrap_with: { tag: 'p', class: 'mt-2 text-sm text-red-600' }
 end
 
+config.wrappers :string_corner_hint, tag: :div do |b|
+  b.use :html5
+  b.use :placeholder
+  b.optional :maxlength
+  b.optional :minlength
+  b.optional :pattern
+  b.optional :min_max
+  b.optional :readonly
+
+  b.wrapper tag: :div, class: "flex justify-between", error_class: nil, valid_class: nil do |c|
+    c.use :label, class: "block text-sm font-medium text-gray-700"
+    c.use :hint,  wrap_with: { tag: :span, class: "text-sm text-gray-500" }
+  end
+
+  b.use :input,
+    class: "appearance-none block w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm placeholder-gray-400 focus:outline-none focus:ring-indigo-500 focus:border-indigo-500 sm:text-sm",
+    error_class: "block w-full pr-10 border-red-300 text-red-900 placeholder-red-300 focus:outline-none focus:ring-red-500 focus:border-red-500 sm:text-sm rounded-md"
+  b.use :full_error, wrap_with: { tag: "p", class: "mt-2 text-sm text-red-600" }
+end
+
 config.wrapper_mappings = {
   string: :tailwind_string_input,
 }
