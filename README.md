@@ -9,7 +9,7 @@ First, install and set up [Simple Form][].
 Then add this gem to your application's Gemfile:
 
 ```ruby
-gem "simple_form_tailwind"
+gem "simple_form_tailwind", github: "abevoelker/simple_form_tailwind"
 ```
 
 And then execute:
