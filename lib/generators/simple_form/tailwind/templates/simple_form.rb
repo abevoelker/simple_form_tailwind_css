@@ -31,6 +31,27 @@ SimpleForm.setup do |config|
     b.use :hint,  wrap_with: { tag: :p, class: "mt-2 text-sm text-gray-500" }
   end
 
+  config.wrappers :prepend_string, tag: 'div', class: '', error_class: '', valid_class: '' do |b|
+    b.use :html5
+    b.use :placeholder
+    b.optional :maxlength
+    b.optional :minlength
+    b.optional :pattern
+    b.optional :min_max
+    b.optional :readonly
+
+    b.use :label, class: "block text-sm font-medium text-gray-700"
+
+    b.wrapper tag: 'div', class: 'mt-1 flex rounded-md shadow-sm' do |d|
+      d.use :prepend
+      d.use :input,
+        class: "flex-1 min-w-0 block w-full px-3 py-2 rounded-none rounded-r-md focus:ring-indigo-500 focus:border-indigo-500 sm:text-sm border-gray-300",
+        error_class: "flex-1 min-w-0 block w-full px-3 py-2 rounded-none rounded-r-md focus:ring-red-500 focus:border-red-500 sm:text-sm border-red-300 text-red-900 placeholder-red-300"
+    end
+    b.use :full_error, wrap_with: { tag: "p", class: "mt-2 text-sm text-red-600" }
+    b.use :hint,  wrap_with: { tag: :p, class: "mt-2 text-sm text-gray-500" }
+  end
+
   config.wrappers :corner_hint, tag: :div do |b|
     b.use :html5
     b.use :placeholder
@@ -126,6 +147,7 @@ SimpleForm.setup do |config|
   # type as key and the wrapper that will be used for all inputs with specified type.
   config.wrapper_mappings = {
     string: :default,
+    prepend_string: :prepend_string,
   }
 
   # Namespaces where SimpleForm should look for custom input classes that
