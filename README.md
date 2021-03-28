@@ -43,6 +43,38 @@ One important difference when using Tailwind form builder versus Simple Form's d
 
 ## Components
 
+### Default
+
+```
+<%= f.input :display_name, placeholder: "Alex Smith", hint: "Max 255 characters" %>
+```
+
+![Prepend component preview](/docs/images/components/default.png?raw=true)
+
+### Corner hint
+
+```
+<%= f.input :display_name, wrapper: "corner_hint", placeholder: "Alex Smith", hint: "Max 255 characters" %>
+```
+
+![Prepend component preview](/docs/images/components/corner_hint.png?raw=true)
+
+### Prepend
+
+```
+<%= f.input :twitter_username, as: "prepend_string", prepend: "twitter.com/", placeholder: "jack" %>
+```
+
+![Prepend component preview](/docs/images/components/prepend.png?raw=true)
+
+### Append
+
+```
+<%= f.input :substack_username, as: "append_string", append: ".substack.com", placeholder: "graymirror" %>
+```
+
+![Append component preview](/docs/images/components/append.png?raw=true)
+
 ### Error notification
 
 Simple Form's error notification is supported, defaulting to a red color with x-circle Heroicon:
