@@ -39,7 +39,7 @@ Here's an example form demonstrating usage:
 <% end %>
 ```
 
-One important difference when using Tailwind form builder versus Simple Form's default form builder is that `:error` and `:valid` classes **completely overwrite** `:class` rather than add to it.
+One important difference when using Tailwind form builder versus Simple Form's default form builder is that `:error_class` and `:valid_class` classes **completely overwrite** `:class` rather than add to it. This is more amenable to the Tailwind way of doing things, as the "error" state may have completely different classes than the form component in its "default" state.
 
 ## Components
 
