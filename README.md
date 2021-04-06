@@ -49,7 +49,11 @@ One important difference when using Tailwind form builder versus Simple Form's d
 <%= f.input :display_name, placeholder: "Alex Smith", hint: "Max 255 characters" %>
 ```
 
-![Prepend component preview](/docs/images/components/default.png?raw=true)
+![Default component preview](/docs/images/components/default.png?raw=true)
+
+With an error, it looks like this:
+
+![Default component with error preview](/docs/images/components/default_with_error.png?raw=true)
 
 ### Corner hint
 
@@ -57,7 +61,7 @@ One important difference when using Tailwind form builder versus Simple Form's d
 <%= f.input :display_name, wrapper: "corner_hint", placeholder: "Alex Smith", hint: "Max 255 characters" %>
 ```
 
-![Prepend component preview](/docs/images/components/corner_hint.png?raw=true)
+![Corner hint component preview](/docs/images/components/corner_hint.png?raw=true)
 
 ### Prepend
 
