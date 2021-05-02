@@ -1,0 +1,14 @@
+# frozen_string_literal: true
+require "simple_form/tailwind/form_builder"
+
+module SimpleForm
+  module ActionViewExtensions
+    module FormHelper
+      def tailwind_form_for(record, options = {}, &block)
+        options[:builder] ||= SimpleForm::Tailwind::FormBuilder
+
+        simple_form_for(record, options = {}, &block)
+      end
+    end
+  end
+end

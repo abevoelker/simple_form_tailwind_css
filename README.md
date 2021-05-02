@@ -4,7 +4,7 @@ Tailwind components for [Simple Form][]
 
 ## Installation
 
-First, [install Tailwind](https://github.com/rails/tailwindcss-rails) and [Simple Form][].
+First, install and setup [Tailwind](https://github.com/rails/tailwindcss-rails) ([helpful additional steps here](https://github.com/rails/tailwindcss-rails/issues/25)), [Simple Form][], and the [heroicon gem](https://github.com/bharget/heroicon).
 
 Then add this gem to your application's Gemfile:
 
