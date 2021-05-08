@@ -4,14 +4,14 @@ $LOAD_PATH.unshift(lib) unless $LOAD_PATH.include?(lib)
 require "simple_form/tailwind/version"
 
 Gem::Specification.new do |spec|
-  spec.name          = "simple_form_tailwind"
+  spec.name          = "simple_form_tailwind_css"
   spec.version       = SimpleForm::Tailwind::VERSION
   spec.authors       = ["Abe Voelker"]
   spec.email         = ["_@abevoelker.com"]
 
   spec.summary       = %q{Tailwind components for Simple Form}
   #spec.description   = %q{TODO: Write a longer description or delete this line.}
-  spec.homepage      = "https://github.com/abevoelker/simple_form_tailwind"
+  spec.homepage      = "https://github.com/abevoelker/simple_form_tailwind_css"
   spec.license       = "MIT"
 
   # Prevent pushing this gem to RubyGems.org. To allow pushes either set the 'allowed_push_host'
