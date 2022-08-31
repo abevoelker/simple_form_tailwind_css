@@ -124,10 +124,10 @@ Simple Form's error notification is supported, defaulting to a red color with x-
 
 ![Red error notification](/docs/images/error_notification_red.png?raw=true)
 
-You can customize the color and icon used:
+You can customize the icon and Tailwind classes used:
 
 ```erb
-<%= f.error_notification color: "blue", icon: "information-circle" %>
+<%= f.error_notification icon: "information-circle", icon_classes: "h-5 w-5 text-blue-400", message_classes: "text-sm text-blue-700", border_classes: "bg-blue-50 border-l-4 border-blue-400 p-4" %>
 ```
 
 ![Blue error notification](/docs/images/error_notification_blue.png?raw=true)
