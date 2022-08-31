@@ -2,11 +2,25 @@
 
 Tailwind components for [Simple Form][]
 
+## Prerequisites
+
+You should have these installed first:
+
+* [Simple Form gem][Simple Form]
+* [Tailwind][]
+  * We're agnostic about install method; the Rails [tailwindcss-rails gem][] is one method
+* [Heroicon gem][]
+  * Be sure to [run the install generator][heroicon generator] if it's a new dependency to your project
+
+[Simple Form]: https://github.com/heartcombo/simple_form
+[Tailwind]: https://tailwindcss.com/
+[tailwindcss-rails gem]: https://github.com/rails/tailwindcss-rails
+[Heroicon gem]: https://github.com/bharget/heroicon
+[heroicon generator]: https://github.com/bharget/heroicon#installation
+
 ## Installation
 
-First, install and setup [Tailwind](https://github.com/rails/tailwindcss-rails) ([helpful additional steps here](https://github.com/rails/tailwindcss-rails/issues/25)), [Simple Form][], and the [heroicon gem](https://github.com/bharget/heroicon).
-
-Then add this gem to your application's Gemfile:
+Add to your application's Gemfile:
 
 ```ruby
 gem "simple_form_tailwind_css"
@@ -18,11 +32,32 @@ And then execute:
 $ bundle install
 ```
 
-Finally, overwrite your Simple Form initializer with ours:
+Next, overwrite your Simple Form initializer with ours:
 
 ```
 $ rails g simple_form:tailwind:install
 ```
+
+Finally, for Tailwind 3 we need to modify `tailwind.config.js` to add an environment
+variable that tells Tailwind where the gem's Ruby source is so that classes used by
+the gem aren't pruned by Tailwind's JIT:
+
+```diff
+--- a/tailwind.config.js
++++ b/tailwind.config.js
+@@ -4,6 +4,7 @@ const colors = require('tailwindcss/colors')
+ /** @type {import('tailwindcss').Config} */
+ module.exports = {
+   content: [
++    `${process.env.SIMPLE_FORM_TAILWIND_DIR}/**/*.rb`,
+     './app/views/**/*.{html,erb,haml}',
+     './app/helpers/**/*.rb',
+     './app/javascript/**/*.{js,jsx,ts,tsx,vue}',
+```
+
+We're not done yet - jump down to the
+[Tailwind JIT configuration](#tailwind-jit-configuration) section to read
+approaches on how to pass in this variable to complete setup.
 
 ## Usage
 
@@ -99,6 +134,63 @@ You can customize the color and icon used:
 
 The message and other parameters can be customized using the [expected Simple Form configuration options](https://www.rubydoc.info/github/plataformatec/simple_form/SimpleForm%2FFormBuilder:error_notification).
 
+## Tailwind JIT configuration
+
+How to pass the `SIMPLE_FORM_TAILWIND_DIR` environment variable in to
+`tailwind.config.js` is going to vary depending on how your build setup calls
+the `tailwindcss` CLI.
+
+If you're using the [tailwindcss-rails gem][] with its `tailwindcss:build` and `tailwindcss:watch` rake tasks, you can override them with something like this:
+
+```ruby
+# lib/tasks/tailwindcss.rake
+
+TAILWIND_COMPILE_COMMAND = "#{RbConfig.ruby} #{Pathname.new(__dir__).to_s}/../../exe/tailwindcss -i '#{Rails.root.join("app/assets/stylesheets/application.tailwind.css")}' -o '#{Rails.root.join("app/assets/builds/tailwind.css")}' -c '#{Rails.root.join("config/tailwind.config.js")}' --minify"
+SIMPLE_FORM_TAILWIND_GEMDIR = `bundle show simple_form_tailwind_css`
+
+Rake::Task["tailwindcss:build"].clear
+Rake::Task["tailwindcss:watch"].clear
+namespace :tailwindcss do
+  desc "Build your Tailwind CSS"
+  task :build do
+    system({"SIMPLE_FORM_TAILWIND_GEMDIR" => SIMPLE_FORM_TAILWIND_GEMDIR}, TAILWIND_COMPILE_COMMAND, exception: true)
+  end
+
+  desc "Watch and build your Tailwind CSS on file changes"
+  task :watch do
+    system({"SIMPLE_FORM_TAILWIND_GEMDIR" => SIMPLE_FORM_TAILWIND_GEMDIR}, "#{TAILWIND_COMPILE_COMMAND} -w")
+  end
+end
+```
+
+For myself, using [Propshaft][] and an npm script, I made this change:
+
+```diff
+--- a/package.json
++++ b/package.json
+@@ -50,10 +50,10 @@
+   },
+   "scripts": {
+     "build-dev:js": "esbuild `find app/javascript -type f` --tsconfig=./tsconfig.json --bundle --sourcemap --outdir=app/assets/builds --public-path=assets",
+-    "build-dev:tailwind": "tailwindcss -i ./app/assets/stylesheets/application.tailwind.css -o ./app/assets/builds/tailwind.css --minify",
++    "build-dev:tailwind": "SIMPLE_FORM_TAILWIND_DIR=\"`bundle show simple_form_tailwind_css`\" tailwindcss -i ./app/assets/stylesheets/application.tailwind.css -o ./app/assets/builds/tailwind.css --minify",
+     "build-dev:css": "sass ./app/assets/stylesheets/application.sass.scss:./app/assets/builds/application.css --no-source-map --load-path=node_modules"
+   }
+ }
+```
+
+[Propshaft]: https://github.com/rails/propshaft
+
+As an absolute last resort, instead of dynamically setting the `content` config
+option you could use `safelist` instead. [Here's an example][safelist example]
+from the project issues.
+
+However, this approach is [discouraged by Tailwind][], and is unsupported by this
+gem as it's likely to break in the future if class names are changed.
+
+[discouraged by Tailwind]: https://tailwindcss.com/docs/content-configuration#safelisting-classes
+[safelist example]: https://github.com/abevoelker/simple_form_tailwind_css/issues/4#issuecomment-1232210573
+
 ## Tailwind workarounds
 
 When using spacing classes such as `space-y-<number>`, Tailwind 2 has [an unfortunate shortcoming](https://github.com/tailwindlabs/tailwindcss/issues/3413) where certain hidden elements disrupt element spacing. Rails's authenticity token unfortunately is one such hidden element that triggers this behavior.
@@ -127,4 +219,3 @@ Instead add a wrapper `<div>` around the form elements:
 
 The gem is available as open source under the terms of the [MIT License](https://opensource.org/licenses/MIT).
 
-[Simple Form]: https://github.com/heartcombo/simple_form
